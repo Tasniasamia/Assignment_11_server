@@ -29,27 +29,28 @@ async function run() {
     const collection= database.collection("toyscollection1");
     const toyscollection2= database.collection("toyscollection2");
     const toyscollection3= database.collection("toycollection3");
+    const toyscollection4= database.collection("toyscollection3");
 
 app.post('/AddToy',async(req,res)=>{
   const AddToy=req.body;
   const result = await toyscollection2.insertOne(AddToy);
   res.send(result);
 })
-app.post('/getmytoydata',async(req,res)=>{
-const toydata=req.body;
-const result=await toyscollection3.insertOne(toydata);
+// app.post('/getmytoydata',async(req,res)=>{
+// const toydata=req.body;
+// const result=await toyscollection3.insertOne(toydata);
 
-res.send(result);
+// res.send(result);
 
 
-})
+// })
 
 
 app.delete('/mytoysdel/:id',async(req,res)=>{
 
   const id=req.params.id;
   const query = { _id: new ObjectId(id) };
-  const result = await toyscollection3.deleteOne(query);
+  const result = await toyscollection2.deleteOne(query);
   console.log(result);
   res.send(result);
 
@@ -74,7 +75,7 @@ $set: {
 },
 
 };
-const result = await toyscollection3.updateOne(filter, updateDoc);
+const result = await toyscollection2.updateOne(filter, updateDoc);
 console.log(result);
 res.send(result);
 })
@@ -108,10 +109,11 @@ const id=req.params.id;
         .toArray();
       res.send(result);
     });
-    app.get('/mytoys/:email',async(req,res)=>{
+    app.get('/mytoysdatas/:email',async(req,res)=>{
       console.log(req.params.email)
-      const result=await toyscollection3.find({
-        selleremail: req.params.email}).toArray();
+      const result=await toyscollection2.find({
+        Selleremail: req.params.email}).toArray();
+
       res.send(result);
     
     })
@@ -119,10 +121,14 @@ const id=req.params.id;
     app.get('/mytoysdata/:id',async(req,res)=>{
       const id=req.params.id;
       const query={ _id: new ObjectId(id)};
-      const finddata=await toyscollection3.findOne(query);
+      const finddata=await toyscollection2.findOne(query);
       console.log(finddata);
       res.send(finddata);
     })
+    // app.get('/asenddata',async(req,res)=>{
+    //   const result=await toyscollection3.find({}).sort({ price : 1 }).toArray();
+    //   res.send(result);
+    // })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
