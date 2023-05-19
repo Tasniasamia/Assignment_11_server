@@ -96,6 +96,18 @@ const id=req.params.id;
       const movie = await toyscollection2.findOne(ids);
       res.send(movie);
     })
+    app.get("/Alltoysdata/:text", async (req, res) => {
+      const text = req.params.text;
+      const result = await toyscollection2
+        .find({
+          $or: [
+            { toyname: { $regex: text, $options: "i" } },
+            { subcategory: { $regex: text, $options: "i" } },
+          ],
+        })
+        .toArray();
+      res.send(result);
+    });
     app.get('/mytoys/:email',async(req,res)=>{
       console.log(req.params.email)
       const result=await toyscollection3.find({
