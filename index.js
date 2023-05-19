@@ -50,6 +50,15 @@ app.get('/mytoys/:email',async(req,res)=>{
   res.send(result);
 
 })
+app.delete('/mytoys/:id',async(req,res)=>{
+
+  const id=req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await toyscollection3.deleteOne(query);
+  console.log(result);
+  res.send(result);
+
+})
     app.get('/subcategory',async(req,res)=>{
         const cursor =await collection.find().toArray();
         console.log(cursor);
