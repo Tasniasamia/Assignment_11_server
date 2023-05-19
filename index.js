@@ -43,14 +43,9 @@ res.send(result);
 
 
 })
-app.get('/mytoys/:email',async(req,res)=>{
-  console.log(req.params.email)
-  const result=await toyscollection3.find({
-    selleremail: req.params.email}).toArray();
-  res.send(result);
 
-})
-app.delete('/mytoys/:id',async(req,res)=>{
+
+app.delete('/mytoysdel/:id',async(req,res)=>{
 
   const id=req.params.id;
   const query = { _id: new ObjectId(id) };
@@ -59,6 +54,32 @@ app.delete('/mytoys/:id',async(req,res)=>{
   res.send(result);
 
 })
+
+app.patch('/mytoyupdate/:id',async(req,res)=>{
+
+
+  const id=req.params.id;
+  const user=req.body;
+  const filter = { _id:new ObjectId(id)};
+  // const options = { upsert: true };
+
+
+const updateDoc = {
+
+$set: {
+
+  ...user
+
+
+},
+
+};
+const result = await toyscollection3.updateOne(filter, updateDoc);
+console.log(result);
+res.send(result);
+})
+
+
     app.get('/subcategory',async(req,res)=>{
         const cursor =await collection.find().toArray();
         console.log(cursor);
@@ -74,6 +95,21 @@ const id=req.params.id;
       const ids = { _id: new ObjectId(id) };
       const movie = await toyscollection2.findOne(ids);
       res.send(movie);
+    })
+    app.get('/mytoys/:email',async(req,res)=>{
+      console.log(req.params.email)
+      const result=await toyscollection3.find({
+        selleremail: req.params.email}).toArray();
+      res.send(result);
+    
+    })
+    
+    app.get('/mytoysdata/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={ _id: new ObjectId(id)};
+      const finddata=await toyscollection3.findOne(query);
+      console.log(finddata);
+      res.send(finddata);
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
