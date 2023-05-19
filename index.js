@@ -28,10 +28,27 @@ async function run() {
     
     const collection= database.collection("toyscollection1");
     const toyscollection2= database.collection("toyscollection2");
+    const toyscollection3= database.collection("toycollection3");
+
 app.post('/AddToy',async(req,res)=>{
   const AddToy=req.body;
   const result = await toyscollection2.insertOne(AddToy);
   res.send(result);
+})
+app.post('/getmytoydata',async(req,res)=>{
+const toydata=req.body;
+const result=await toyscollection3.insertOne(toydata);
+
+res.send(result);
+
+
+})
+app.get('/mytoys/:email',async(req,res)=>{
+  console.log(req.params.email)
+  const result=await toyscollection3.find({
+    selleremail: req.params.email}).toArray();
+  res.send(result);
+
 })
     app.get('/subcategory',async(req,res)=>{
         const cursor =await collection.find().toArray();
