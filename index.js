@@ -29,7 +29,7 @@ async function run() {
     const collection= database.collection("toyscollection1");
     const toyscollection2= database.collection("toyscollection2");
     const toyscollection3= database.collection("toycollection3");
-    const toyscollection4= database.collection("toyscollection3");
+    const toyscollection4= database.collection("toyscollection4");
 
 app.post('/AddToy',async(req,res)=>{
   const AddToy=req.body;
@@ -80,12 +80,22 @@ console.log(result);
 res.send(result);
 })
 
-
+app.get('/subcategoytwist',async(req,res)=>{
+  const result=await toyscollection4.find().toArray();
+  res.send(result);
+})
     app.get('/subcategory',async(req,res)=>{
         const cursor =await collection.find().toArray();
         console.log(cursor);
         res.send(cursor);
 
+    })
+    app.get('/subcatogory/:id',async(req,res)=>{
+      const id=req.params.id;
+      const query={ _id: new ObjectId(id)};
+      const finddata=await toyscollection4.findOne(query);
+      console.log(finddata);
+      res.send(finddata);
     })
     app.get('/AllToys',async(req,res)=>{
       const cursor =await toyscollection2.find().toArray();
@@ -111,12 +121,29 @@ const id=req.params.id;
     });
     app.get('/mytoysdatas/:email',async(req,res)=>{
       console.log(req.params.email)
+      
       const result=await toyscollection2.find({
         Selleremail: req.params.email}).toArray();
 
       res.send(result);
     
     })
+    // app.get('/mytoysdatasallitems/:text',async(req,res)=>{
+    //   console.log(req.params.text)
+    //   if(req.params.text=="price"){
+    //     const result1=await toyscollection2.find({price: req.params.text}).sort({ price : 1 }).toArray();
+    //     return res.send(result1);
+    //   }
+    //   else if(req.params.text=="quantity"){
+    //     const result1=await toyscollection2.find({quantity: req.params.text}).sort({ price : -1 }).toArray();
+    //     return res.send(result1);
+    //   }
+    //   const result=await toyscollection2.find({
+    //     Selleremail: req.params.text}).toArray();
+
+    //   res.send(result);
+    
+    // })
     
     app.get('/mytoysdata/:id',async(req,res)=>{
       const id=req.params.id;
