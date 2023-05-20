@@ -119,14 +119,29 @@ const id=req.params.id;
         .toArray();
       res.send(result);
     });
-    app.get('/mytoysdatas/:email',async(req,res)=>{
-      console.log(req.params.email)
+    // app.get('/mytoysdatas/:email',async(req,res)=>{
+    //   console.log(req.params.email)
       
-      const result=await toyscollection2.find({
-        Selleremail: req.params.email}).toArray();
+    //   const result=await toyscollection2.find({
+    //     Selleremail: req.params.email}).toArray();
 
-      res.send(result);
+    //   res.send(result);
     
+    // })
+    app.get('/mytoysdatas',async(req,res)=>{
+      const email=req.query.email;
+      const sortdata=req.query.sortdata;
+      if(sortdata=="asending"){
+        const result=await toyscollection2.find({Selleremail: email}).sort({ price: 1 }).toArray();
+          return res.send(result);
+      }
+      else if(sortdata=="desending"){
+        const result=await toyscollection2.find({Selleremail: email}).sort({ price: -1 }).toArray();
+          return res.send(result);
+      }
+      const result=await toyscollection2.find({Selleremail: email}).toArray();
+      console.log(result);
+     res.send(result);
     })
     // app.get('/mytoysdatasallitems/:text',async(req,res)=>{
     //   console.log(req.params.text)
